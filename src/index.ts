@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
   Quote
-} from './types';
+} from './types.js';
 
 export class BookmateClient {
   constructor(private readonly cookie: string) {
