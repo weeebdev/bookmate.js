@@ -10,14 +10,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     })
   }
 
-  const { cookie = '' } = req.body
-
-  if (!cookie) {
+  if (!req.body.cookie) {
     res.statusCode = 400
     return res.json({
       message: 'Please provide a cookie',
     })
   }
+
+  const cookie = req.body.cookie
 
   const client = new BookmateClient(cookie)
   const quotes = await client.getQuotes()
