@@ -10,7 +10,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     })
   }
 
-  if (!req.body.cookie) {
+  if (!req.body?.cookie) {
     res.statusCode = 400
     return res.json({
       message: 'Please provide a cookie',
