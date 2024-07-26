@@ -1,26 +1,46 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { BookmateClient } from '../src/index.js'
+import cors from '../lib/cors.js'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export const config = {
+  runtime: 'edge',
+}
 
+export default async function handler(req: Request, res: Response) {
   if (req.method !== 'POST') {
-    res.statusCode = 405
-    return res.json({
-      message: 'Method not allowed'
-    })
+    return cors(
+      req,
+      new Response("", {
+        status: 405,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    )
   }
 
-  if (!req.body?.cookie) {
-    res.statusCode = 400
-    return res.json({
-      message: 'Please provide a cookie',
-    })
+
+  const body = await req.json();
+
+  // check if cookie is provided in the body
+  if (!body.cookie) {
+    return cors(
+      req, new Response(JSON.stringify({
+        message: 'Please provide a cookie',
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    )
   }
 
-  const cookie = req.body.cookie
+  const cookie = body.cookie
 
   const client = new BookmateClient(cookie)
   const quotes = await client.getQuotes()
 
-  return res.json(quotes)
+  return cors(
+    req,
+    new Response(JSON.stringify(quotes), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  )
 }
