@@ -3,6 +3,13 @@ import { BookmateClient } from '../src/index.js'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
 
+  if (req.method !== 'POST') {
+    res.statusCode = 405
+    return res.json({
+      message: 'Method not allowed'
+    })
+  }
+
   const { cookie = '' } = req.body
 
   if (!cookie) {
