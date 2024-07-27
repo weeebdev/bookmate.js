@@ -116,3 +116,8 @@ export interface Avatar {
   small: string
 }
 
+export interface Params {
+  per_page?: number,
+  page?: number,
+  lang?: string,
+}
