@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {
-  Quote
+  Quote, Params
 } from './types.js';
+
 
 export class BookmateClient {
   constructor(private readonly cookie: string) {
@@ -10,15 +11,15 @@ export class BookmateClient {
     }
   }
 
-  public async getQuotes(): Promise<Quote[]> {
+  public async getQuotes(params?: Params): Promise<Quote[]> {
     let config = {
       method: 'get',
       url: 'https://bookmate.ru/p/api/v5/profile/quotes',
       headers: {
         cookie: this.cookie
-      }
+      },
+      params: params
     };
-
 
     type Output = {
       quotes: Quote[]
