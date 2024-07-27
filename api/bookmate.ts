@@ -32,9 +32,11 @@ export default async function handler(req: Request, res: Response) {
   }
 
   const cookie = body.cookie
+  const url = new URL(req.url)
+  const params = Object.fromEntries(url.searchParams)
 
   const client = new BookmateClient(cookie)
-  const quotes = await client.getQuotes()
+  const quotes = await client.getQuotes(params)
 
   return cors(
     req,
